@@ -58,6 +58,11 @@ let hiddenVars = {
   g2: null
 };
 
+// --- Color Configuration for Canvas (Hex Values) ---
+const colorGPE = '#FF2E93';
+const colorKE = '#00F2FE';
+const colorTotal = '#39FF14';
+
 // --- Canvas Contexts ---
 const ctxAnim = animCanvas.getContext('2d');
 const ctxGraph = graphCanvas.getContext('2d');
@@ -266,7 +271,7 @@ function drawAnimation() {
     ctxAnim.setLineDash([]);
 
     // Captured Flag text
-    ctxAnim.fillStyle = 'var(--accent-ke)';
+    ctxAnim.fillStyle = colorKE;
     ctxAnim.font = 'bold 11px "Outfit"';
     ctxAnim.textAlign = 'left';
     
@@ -301,12 +306,12 @@ function drawAnimation() {
   const barX = ballXPos - 50;
   const barY = ballYPos - maxBarH / 2;
 
-  // GPE Bar (Red/Pink)
-  ctxAnim.fillStyle = 'var(--accent-gpe)';
+  // GPE Bar (Pink)
+  ctxAnim.fillStyle = colorGPE;
   ctxAnim.fillRect(barX, barY + (1 - gpeFraction) * maxBarH, barWidth, gpeFraction * maxBarH);
 
   // KE Bar (Cyan)
-  ctxAnim.fillStyle = 'var(--accent-ke)';
+  ctxAnim.fillStyle = colorKE;
   ctxAnim.fillRect(barX + barWidth + 4, barY + (1 - keFraction) * maxBarH, barWidth, keFraction * maxBarH);
 
   // Ball glow
@@ -436,18 +441,18 @@ function drawGraph() {
   };
 
   if (elapsedTime > 0) {
-    // GPE
-    drawEnergyLine(s => s.gpe, 'var(--accent-gpe)', 'rgba(255, 46, 147, 0.4)');
-    // KE
-    drawEnergyLine(s => s.ke, 'var(--accent-ke)', 'rgba(0, 242, 254, 0.4)');
-    // Total
-    drawEnergyLine(s => s.total, 'var(--accent-total)', 'rgba(57, 255, 20, 0.4)');
+    // GPE (Pink)
+    drawEnergyLine(s => s.gpe, colorGPE, 'rgba(255, 46, 147, 0.4)');
+    // KE (Cyan)
+    drawEnergyLine(s => s.ke, colorKE, 'rgba(0, 242, 254, 0.4)');
+    // Total (Green)
+    drawEnergyLine(s => s.total, colorTotal, 'rgba(57, 255, 20, 0.4)');
   }
 
   // Draw capture flags on the graph
   captures.forEach((cap, index) => {
     const coords = getCanvasCoords(cap.time, cap.gpe);
-    ctxGraph.fillStyle = 'var(--accent-ke)';
+    ctxGraph.fillStyle = colorKE;
     ctxGraph.beginPath();
     ctxGraph.arc(coords.x, coords.y, 4, 0, Math.PI * 2);
     ctxGraph.fill();
@@ -512,6 +517,7 @@ function onStart() {
   }
 }
 
+// Custom handler to capture current state
 function onCapture() {
   if (elapsedTime <= 0) return;
 
